@@ -3,13 +3,6 @@ import Layout from './container/layout';
 
 class MainApp extends Component {
 
-    constructor(){
-        super();
-        this.state = {
-            cobak:""
-        }
-    }
-
     render() {
         return (
             <Layout />
