@@ -1,0 +1,1 @@
+export const ON_ADD_COMPANY = 'on_add_company'
