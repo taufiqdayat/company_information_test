@@ -1,8 +1,9 @@
 import {CompanyList} from '../companyDummy';
-import { ON_ADD_COMPANY } from '../actionTypes';
+import { ON_ADD_COMPANY, ON_SELECT_COMPANY } from '../actionTypes';
 
 const INIT_STATE = {
-    listCompany:CompanyList
+    listCompany:CompanyList,
+    selectedCompany:{}
 }
 
 
@@ -17,6 +18,15 @@ export default (state=INIT_STATE, action)=>{
             return {
                 ...state,
                 listCompany:companyList
+            }
+        case ON_SELECT_COMPANY:
+            let myList = state.listCompany.find(x=>x.id==action.payload)
+            if(!myList){
+                myList={}
+            }
+            return {
+                ...state,
+                selectedCompany:myList
             }
         default:
             return state;

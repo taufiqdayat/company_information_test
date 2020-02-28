@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {FaTimes} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 class ListCompany extends Component {
     render() {
@@ -17,7 +18,7 @@ class ListCompany extends Component {
                         <div className="col-6" key={index} style={{marginBottom:"20px"}}>
                             <div className="card">
                                 <div className="card-header" style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-                                    {row.name}
+                                    <Link to={`/office/${row.id}`}>{row.name}</Link>
                                     <button className="btn btn-icon">
                                         <FaTimes />
                                     </button>

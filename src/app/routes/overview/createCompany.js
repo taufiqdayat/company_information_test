@@ -43,7 +43,7 @@ class CreateCompany extends Component {
                     </div>
                     <div className="form-group">
                         <label className="control-label">Revenue :</label>
-                        <input className="form-control" type="number" value={this.state.revenue} onChange={(e)=>this.setState({revenue:e.target.value})} />
+                        <input className="form-control" type="number" min={0} value={this.state.revenue} onChange={(e)=>this.setState({revenue:e.target.value})} />
                     </div>
                     <div className="form-group">
                         <label className="control-label">Phone No :</label>
