@@ -2,9 +2,24 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {FaTimes} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { onDeleteCompany } from '../../../redux/actions';
+import { onDeleteCompany, showMessage } from '../../../redux/actions';
+import { Modal, Button } from 'react-bootstrap';
 
 class ListCompany extends Component {
+    constructor(){
+        super();
+        this.state={
+            delModal:false,
+            id:null
+        }
+    }
+
+    handleDelete(id){
+        this.props.onDeleteCompany(id);
+        this.setState({id:null, delModal:false})
+        this.props.showMessage("Success Delete Company", "Info")
+    }
+
     render() {
         const {listCompany, onDeleteCompany} = this.props;
         return (
@@ -20,7 +35,7 @@ class ListCompany extends Component {
                             <div className="card">
                                 <div className="card-header" style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
                                     <Link to={`/office/${row.id}`}>{row.name}</Link>
-                                    <button className="btn btn-icon" onClick={()=>onDeleteCompany(row.id)}>
+                                    <button className="btn btn-icon" onClick={()=>this.setState({delModal:true, id:row.id})}>
                                         <FaTimes />
                                     </button>
                                 </div>
@@ -42,6 +57,17 @@ class ListCompany extends Component {
                         </div>
                     )
                 }
+                <Modal aria-labelledby="contained-modal-title-vcenter" centered show={this.state.delModal} onHide={()=>this.setState({delModal:false, id:null})}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Alert</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Are you sure to delete?
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={()=>this.handleDelete(this.state.id)}>Delete</Button>
+                    </Modal.Footer>
+                </Modal>
                 </div>
             </div>
         );
@@ -53,4 +79,4 @@ const mtp = ({company}) => {
     return {listCompany, isUpdate}
 }
 
-export default connect(mtp, {onDeleteCompany}) (ListCompany);
+export default connect(mtp, {onDeleteCompany, showMessage}) (ListCompany);

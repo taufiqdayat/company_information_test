@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { onSelectCompany, fetchOfficeById, onDeleteOffice } from '../../../redux/actions';
+import { onSelectCompany, fetchOfficeById, onDeleteOffice, showMessage } from '../../../redux/actions';
 import {FaTimes} from 'react-icons/fa';
+import { Modal, Button } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 class OfficePage extends Component {
     constructor(props){
         super(props);
-
+        this.state={
+            delModal:false,
+            id:null,
+            company_id:null,
+        }
         this.props.onSelectCompany(this.props.match.params.id)
         this.props.fetchOfficeById(this.props.match.params.id)
+    }
+
+    handleDelete(){
+        this.props.onDeleteOffice(this.state.id, this.state.company_id);
+        this.setState({id:null, company_id:null, delModal:false})
+        this.props.showMessage("Success Delete Office", "Info")
     }
 
     render() {
@@ -53,7 +64,7 @@ class OfficePage extends Component {
                                             <div className="card" style={{marginBottom:"20px"}}>
                                                 <div className="card-header" style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
                                                     {row.name}
-                                                    <button className="btn btn-icon" onClick={()=>this.props.onDeleteOffice(row.id, match.params.id)}>
+                                                    <button className="btn btn-icon" onClick={()=>this.setState({delModal:true, id:row.id, company_id:match.params.id})}>
                                                         <FaTimes />
                                                     </button>
                                                 </div>
@@ -73,6 +84,17 @@ class OfficePage extends Component {
                                         </div>
                                     )
                                 }
+                                <Modal aria-labelledby="contained-modal-title-vcenter" centered show={this.state.delModal} onHide={()=>this.setState({delModal:false, id:null})}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Alert</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        Are you sure to delete?
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button onClick={()=>this.handleDelete()}>Delete</Button>
+                                    </Modal.Footer>
+                                </Modal>
                             </div>
                         </div>
                     </div>
@@ -88,4 +110,4 @@ const mtp = ({company, office}) => {
     return {selectedCompany, listOfficeById, isUpdate}
 }
 
-export default connect(mtp,{onSelectCompany, fetchOfficeById, onDeleteOffice}) (OfficePage);
+export default connect(mtp,{onSelectCompany, fetchOfficeById, onDeleteOffice, showMessage}) (OfficePage);
