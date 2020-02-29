@@ -16,7 +16,7 @@ class OfficePage extends Component {
         const {selectedCompany, listOfficeById} = this.props;
         return (
             <div className="container" style={{marginTop:"40px", display:"flex", justifyContent:"center"}} >
-                <div className="card" style={{padding:"15px 30px"}}>
+                <div className="card" style={{padding:"15px 30px", width:"70%"}}>
                     <div className="row">
                         <div className="col-12">
                             <h3>{selectedCompany.name}</h3>
@@ -50,7 +50,7 @@ class OfficePage extends Component {
                                     &&
                                     listOfficeById.map((row,id)=>(
                                         <div className="col-6" key={id}>
-                                            <div className="card">
+                                            <div className="card" style={{marginBottom:"20px"}}>
                                                 <div className="card-header" style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
                                                     {row.name}
                                                     <button className="btn btn-icon">
@@ -61,7 +61,7 @@ class OfficePage extends Component {
                                                     <b>Location :</b>
                                                     <p>{row.location}</p>
                                                     <b>Office Start Date :</b>
-                                                    <p>{row.startDate}</p>
+                                                    <p>{row.start_date}</p>
                                                 </div>
                                             </div>
                                         </div>
