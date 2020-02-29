@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {FaTimes} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { onDeleteCompany } from '../../../redux/actions';
 
 class ListCompany extends Component {
     render() {
-        const {listCompany} = this.props;
+        const {listCompany, onDeleteCompany} = this.props;
         return (
             <div style={{marginBottom:"50px"}}>
                 <hr />
@@ -13,13 +14,13 @@ class ListCompany extends Component {
                 <div className="row">
                 {
                     listCompany.length>0
-                    &&
+                    ?
                     listCompany.map((row, index)=>(
                         <div className="col-6" key={index} style={{marginBottom:"20px"}}>
                             <div className="card">
                                 <div className="card-header" style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
                                     <Link to={`/office/${row.id}`}>{row.name}</Link>
-                                    <button className="btn btn-icon">
+                                    <button className="btn btn-icon" onClick={()=>onDeleteCompany(row.id)}>
                                         <FaTimes />
                                     </button>
                                 </div>
@@ -34,6 +35,12 @@ class ListCompany extends Component {
                             </div>
                         </div>
                     ))
+                    :
+                    (
+                        <div className="col-sm-12">
+                            <h5 style={{textAlign:"center"}}>No Company Found</h5>
+                        </div>
+                    )
                 }
                 </div>
             </div>
@@ -42,8 +49,8 @@ class ListCompany extends Component {
 }
 
 const mtp = ({company}) => {
-    const {listCompany} = company
-    return {listCompany}
+    const {listCompany, isUpdate} = company
+    return {listCompany, isUpdate}
 }
 
-export default connect(mtp, {}) (ListCompany);
+export default connect(mtp, {onDeleteCompany}) (ListCompany);

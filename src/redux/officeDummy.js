@@ -15,7 +15,7 @@ export const OfficeList = [
     },
     {
         "id":3,
-        "company_id":2,
+        "company_id":1,
         "name":"jakarta office",
         "location":[1233123, 1231231],
         "start_date":"25/12/2020"
