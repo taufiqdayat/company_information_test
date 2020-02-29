@@ -38,7 +38,7 @@ class ListCompany extends Component {
                     :
                     (
                         <div className="col-sm-12">
-                            <h5 style={{textAlign:"center"}}>No Company Found</h5>
+                            <h5 style={{textAlign:"center"}}>There is no Company created yet</h5>
                         </div>
                     )
                 }

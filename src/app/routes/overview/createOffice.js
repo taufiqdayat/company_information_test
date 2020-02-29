@@ -16,20 +16,19 @@ class CreateOffice extends Component {
     }
 
     sendRequest(){
-        // if(this.state.company_id<=0){
-        //     alert("error")
-        // }
-        const payload = {
-            id:this.state.id+1,
-            name:this.state.name,
-            company_id:this.state.company_id,
-            location:this.state.location,
-            start_date:moment(this.state.start_date).format('DD/MM/YYYY')
+        if(this.state.company_id>0){
+            const payload = {
+                id:this.props.id+1,
+                company_id:this.state.company_id,
+                name:this.state.name,
+                location:this.state.location,
+                start_date:moment(this.state.start_date).format('DD/MM/YYYY')
+            }
+    
+            this.props.onAddOffice(payload)
+            console.log(payload)
+            this.setState({id:this.props.id+1, company_id:0, name:"", location:["",""], start_date:""})
         }
-
-        this.props.onAddOffice(payload)
-        console.log(payload)
-        this.setState({id:this.state.id+1, company_id:0, name:"", location:["",""], start_date:""})
     }
 
     render() {
@@ -87,9 +86,10 @@ class CreateOffice extends Component {
     }
 }
 
-const mtp = ({company}) => {
-    const {listCompany} = company
-    return {listCompany}
+const mtp = ({company, office}) => {
+    const {listCompany, isUpdate} = company
+    const {id} = office
+    return {listCompany, isUpdate, id}
 }
 
 export default connect(mtp, {onAddOffice}) (CreateOffice);

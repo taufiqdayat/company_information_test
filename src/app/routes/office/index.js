@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { onSelectCompany, fetchOfficeById } from '../../../redux/actions';
+import { onSelectCompany, fetchOfficeById, onDeleteOffice } from '../../../redux/actions';
 import {FaTimes} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 
@@ -13,7 +13,7 @@ class OfficePage extends Component {
     }
 
     render() {
-        const {selectedCompany, listOfficeById} = this.props;
+        const {selectedCompany, listOfficeById, match} = this.props;
         return (
             <div className="container" style={{marginTop:"40px", display:"flex", justifyContent:"center"}} >
                 <div className="card" style={{padding:"15px 30px", width:"70%"}}>
@@ -47,13 +47,13 @@ class OfficePage extends Component {
                             <div className="row" style={{marginTop:"30px"}}>
                                 {
                                     listOfficeById.length>0
-                                    &&
+                                    ?
                                     listOfficeById.map((row,id)=>(
                                         <div className="col-6" key={id}>
                                             <div className="card" style={{marginBottom:"20px"}}>
                                                 <div className="card-header" style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
                                                     {row.name}
-                                                    <button className="btn btn-icon">
+                                                    <button className="btn btn-icon" onClick={()=>this.props.onDeleteOffice(row.id, match.params.id)}>
                                                         <FaTimes />
                                                     </button>
                                                 </div>
@@ -66,6 +66,12 @@ class OfficePage extends Component {
                                             </div>
                                         </div>
                                     ))
+                                    :
+                                    (
+                                        <div className="col-12">
+                                            <h3 style={{textAlign:"center"}}>There is no office created yet</h3>
+                                        </div>
+                                    )
                                 }
                             </div>
                         </div>
@@ -78,8 +84,8 @@ class OfficePage extends Component {
 
 const mtp = ({company, office}) => {
     const {selectedCompany} = company;
-    const {listOfficeById} = office;
-    return {selectedCompany, listOfficeById}
+    const {listOfficeById, isUpdate} = office;
+    return {selectedCompany, listOfficeById, isUpdate}
 }
 
-export default connect(mtp,{onSelectCompany, fetchOfficeById}) (OfficePage);
+export default connect(mtp,{onSelectCompany, fetchOfficeById, onDeleteOffice}) (OfficePage);

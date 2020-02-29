@@ -34,7 +34,6 @@ export default (state=INIT_STATE, action)=>{
         
         case ON_DELETE_COMPANY:
             var removeComp = state.listCompany.map(item=>(item.id)).indexOf(action.payload)
-
             var newLIstComp = state.listCompany
 
             if(removeComp>=0){
