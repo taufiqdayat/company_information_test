@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import { onAddCompany } from '../../../redux/actions';
+import { onAddCompany, showMessage } from '../../../redux/actions';
 
 class CreateCompany extends Component {
     constructor(){
@@ -12,6 +12,7 @@ class CreateCompany extends Component {
             revenue:"",
             phoneCode:"",
             phone:"",
+
         }
     }
 
@@ -24,8 +25,23 @@ class CreateCompany extends Component {
             phone:`(${this.state.phoneCode}) ${this.state.phone}`
         }
 
-        this.props.onAddCompany(payload)
-        this.setState({id:this.state.id+1, name:"",address:"",revenue:"",phoneCode:"",phone:"",})
+        if (this.validate()==true) {
+            this.props.onAddCompany(payload)
+            this.props.showMessage("Success Add Company", "Info");
+            this.setState({id:this.state.id+1, name:"",address:"",revenue:"",phoneCode:"",phone:"",})
+        }else{
+            this.props.showMessage("Complete the form")
+        }
+
+    }
+
+    validate(){
+        const {id, name, address, revenue, phone, phoneCode} = this.state;
+        if (id=="" || name=="" || address=="" || revenue=="" || phone=="" || phoneCode=="") {
+            return false
+        }else{
+            return true
+        }
     }
 
     render() {
@@ -43,7 +59,7 @@ class CreateCompany extends Component {
                     </div>
                     <div className="form-group">
                         <label className="control-label">Revenue :</label>
-                        <input placeholder="Revenue" className="form-control" type="number" min={0} value={this.state.revenue} onChange={(e)=>this.setState({revenue:e.target.value})} />
+                        <input placeholder="Revenue" className="form-control" type="number" min="0" value={this.state.revenue} onChange={(e)=>this.setState({revenue:e.target.value})} />
                     </div>
                     <div className="form-group">
                         <label className="control-label">Phone No :</label>
@@ -70,4 +86,4 @@ const mtp = ({company}) => {
     return {listCompany, id}
 }
 
-export default connect(mtp, {onAddCompany}) (CreateCompany);
+export default connect(mtp, {onAddCompany, showMessage}) (CreateCompany);

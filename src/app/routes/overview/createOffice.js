@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment'
-import { onAddOffice } from '../../../redux/actions/Office';
+import { onAddOffice, showMessage } from '../../../redux/actions';
 
 class CreateOffice extends Component {
     constructor(props){
@@ -16,18 +16,35 @@ class CreateOffice extends Component {
     }
 
     sendRequest(){
-        if(this.state.company_id>0){
-            const payload = {
-                id:this.props.id+1,
-                company_id:this.state.company_id,
-                name:this.state.name,
-                location:this.state.location,
-                start_date:moment(this.state.start_date).format('DD/MM/YYYY')
+        const payload = {
+            id:this.props.id+1,
+            company_id:this.state.company_id,
+            name:this.state.name,
+            location:this.state.location,
+            start_date:moment(this.state.start_date).format('DD/MM/YYYY')
+        }
+
+        if (this.validate()==true) {
+            if(this.state.company_id<=0){
+               this.props.showMessage("Choose One Of Company") 
+            }else{
+                this.props.onAddOffice(payload)
+                console.log(payload)
+                this.props.showMessage("Success Add Office", "Info") 
+                this.setState({id:this.props.id+1, company_id:0, name:"", location:["",""], start_date:""})
             }
+        }else{
+            this.props.showMessage("Complete The Form")
+        }
     
-            this.props.onAddOffice(payload)
-            console.log(payload)
-            this.setState({id:this.props.id+1, company_id:0, name:"", location:["",""], start_date:""})
+    }
+
+    validate(){
+        const {company_id, name, location, start_date} = this.state;
+        if ( name=="" || location[0]=="" || location[1]=="" || start_date=="") {
+            return false
+        }else{
+            return true
         }
     }
 
@@ -92,4 +109,4 @@ const mtp = ({company, office}) => {
     return {listCompany, isUpdate, id}
 }
 
-export default connect(mtp, {onAddOffice}) (CreateOffice);
+export default connect(mtp, {onAddOffice, showMessage}) (CreateOffice);
